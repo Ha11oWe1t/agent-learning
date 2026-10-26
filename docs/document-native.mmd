@@ -1,0 +1,26 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([开始]):::first
+	prepare_context(读取对话与笔记)
+	summary_agent(总结 Agent)
+	validate_evidence(来源校验)
+	assemble_document(生成需求文档与 Markdown)
+	save_draft(保存草稿)
+	save_failure(保存失败与重试状态)
+	__end__([结束]):::last
+	__start__ --> prepare_context;
+	assemble_document --> save_draft;
+	prepare_context --> summary_agent;
+	summary_agent -.-> save_failure;
+	summary_agent -.-> validate_evidence;
+	validate_evidence -.-> assemble_document;
+	validate_evidence -.-> save_failure;
+	save_draft --> __end__;
+	save_failure --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

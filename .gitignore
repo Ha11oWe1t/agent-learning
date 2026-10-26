@@ -1,0 +1,16 @@
+.env
+data/
+__pycache__/
+.pytest_cache/
+*.log
+qa/*.png
+qa/*.jpg
+
+.env.*
+!.env.example
+.venv/
+venv/
+*.sqlite*
+*.db
+*.pyc
+qa/

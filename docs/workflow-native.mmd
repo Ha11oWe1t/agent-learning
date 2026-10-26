@@ -1,0 +1,29 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([开始]):::first
+	initialize(载入练习)
+	await_user(等待用户操作)
+	human_review(人工审阅：补充或定稿)
+	save_final(保存定稿)
+	clarification(需求澄清子图)
+	documentation(文档生成子图)
+	__end__([结束]):::last
+	__start__ --> initialize;
+	await_user -.-> clarification;
+	await_user -.-> documentation;
+	await_user -.-> save_final;
+	clarification --> await_user;
+	documentation -.-> await_user;
+	documentation -.-> human_review;
+	human_review -.-> clarification;
+	human_review -.-> documentation;
+	human_review -.-> save_final;
+	initialize --> await_user;
+	save_final --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

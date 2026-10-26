@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>需求练习室 · Agent Lab</title><link rel="stylesheet" href="/static/style.css?v=stage-states-3"><script src="/static/stage-guides.js?v=stage-nav-2" defer></script><script src="/static/app.js?v=stage-nav-2" defer></script></head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="需求练习室首页"><span class="logo">a<span>✳</span></span><span>Agent Lab<small>智能体开发 · 实战练习室</small></span></a>
+  <button id="new-practice" class="primary new">＋ 开始新的练习</button>
+  <div class="nav-label">你的练习路径</div>
+  <button id="stage-clarify" class="stage active" aria-label="进入需求澄清" aria-current="step"><span>01</span><span class="stage-name">需求澄清<small>访谈、笔记与需求文档</small></span><b>进入 ›</b></button>
+  <button id="stage-design" class="stage" aria-label="进入技术方案设计"><span>03</span><span class="stage-name">技术方案设计<small>流程画布与方案评审</small></span><b>进入 ›</b></button>
+  <button class="stage stage-upcoming" data-stage-guide="5" data-guide-control aria-label="智能体开发阶段指南" aria-haspopup="dialog"><span>05</span><span class="stage-name">智能体开发<small>练习暂未开放 · 可查看指南</small></span><b>指南 ›</b></button>
+  <div class="nav-label history-label">最近练习 <span id="history-count">0</span></div>
+  <div id="history" class="history"></div>
+  <div class="sidebar-footer"><span class="dot"></span> 本地工作区<small>对话与成果保存在这台电脑</small></div>
+</aside>
+<main>
+  <header class="topbar"><div><span class="eyebrow">LANGGRAPH / 01</span><span class="top-title">需求澄清</span></div><div class="topbar-tools"><select id="mobile-stage-select" aria-label="切换练习阶段"><option value="1">需求澄清</option><option value="3">技术方案设计</option></select><button class="guide-entry" data-stage-guide="1" data-guide-control aria-haspopup="dialog">☷ 阶段指南</button><span id="model-status" class="model-status">正在读取模型配置…</span></div></header>
+  <section id="design-workspace" hidden><div id="design-prerequisite" class="panel"><h1>技术方案设计</h1><p id="design-prerequisite-text"></p><button id="return-clarify" class="primary">返回需求澄清并定稿</button></div><iframe id="design-frame" title="当前练习的技术方案设计" hidden></iframe></section>
+  <section id="home">
+    <div class="hero"><span class="eyebrow">从一场真实感的需求访谈开始</span><h1>先问清楚，再动手。<span>让每一次追问都有收获。</span></h1><p>你是智能体开发工程师。与业务负责人沟通，记录判断，<br class="desktop">把一句模糊的需求，整理成一份有依据的需求文档。</p></div>
+    <div class="flow"><div><i>01</i><span>选择业务场景<small>接到你的第一个需求</small></span></div><span class="arrow">→</span><div><i>02</i><span>与需求方对话<small>主动提问，逐步澄清</small></span></div><span class="arrow">→</span><div><i>03</i><span>沉淀需求文档<small>整理笔记，核对证据</small></span></div></div>
+    <div class="section-head"><div><h2>选择一个需求，开始练习</h2><p>每个场景都有不同的业务背景与待澄清细节。</p></div><label class="mode-picker">练习模式<select id="mode"><option value="live">真实模型对话</option><option value="demo">离线演示 · 规则回复</option></select></label></div>
+    <p id="simulation-note" class="simulation-note">通用场景为教学模拟，人物、接口和验收数字均为练习设定。</p>
+    <div id="scenarios" class="scenario-grid"></div>
+    <details class="configuration"><summary>DeepSeek 模型连接与配置说明</summary><p>所有真实 Agent 统一使用 DeepSeek-V4.1-Flash（API 标识：deepseek-flash），由 LangGraph 编排。“配置存在”不代表认证成功；真实模式会向 DeepSeek 发送对话并产生 API 用量。</p><p>请在本项目 .env 中填写 DEEPSEEK_API_KEY，然后刷新页面。无需在网页输入密钥，不读取其他项目配置。未填写时可使用离线演示，体验同一张工作流图。</p></details>
+    <div class="home-note"><span>↗</span><div><strong>你主导这场访谈</strong><p>需求方不会一次交出所有答案。试着问清目标、边界、流程和验收方式；你的个人想法会与已确认事实分开记录。</p></div></div>
+  </section>
+  <section id="workspace" hidden>
+    <div class="workspace-heading"><div><span id="session-category" class="eyebrow"></span><h1 id="session-title"></h1><p id="session-meta"></p></div><button id="generate" class="primary">✧ 生成需求文档</button></div>
+    <div id="demo-banner" class="banner" hidden>当前是离线演示：按关键词提供固定业务信息，不是真实模型对话。可选择真实模型新建练习。</div>
+    <div id="simulation-banner" class="banner" hidden></div>
+    <div id="key-banner" class="banner" hidden>当前练习需要真实模型。请先在本项目 .env 中填写 DEEPSEEK_API_KEY 并刷新页面；现有对话与笔记仍然保留。</div>
+    <details id="workflow-trace" class="workflow-trace" hidden><summary>本次 LangGraph 执行路径</summary><p id="workflow-path"></p><small>这里只展示成功完成的节点；回复或文档通过校验后才保存。</small></details>
+    <div class="work-grid">
+      <section class="chat-panel panel"><div class="panel-heading"><div class="person-avatar" id="person-avatar">林</div><div><h2 id="person-name"></h2><p id="person-role"></p></div><span class="agent-label">需求方 Agent</span></div>
+        <div id="messages" class="messages" aria-live="polite"></div>
+        <details class="hint"><summary>需要一点提问方向？</summary><p>谁会使用？当前怎么处理？第一期做到哪里？哪些事情不能自动做？遇到异常找谁？怎样判断做成了？</p><small>这是通用提示，不代表你已经澄清了这些需求。</small></details>
+        <form id="chat-form" class="composer"><label class="sr-only" for="question">向需求方提问</label><textarea id="question" rows="3" maxlength="4000" placeholder="向需求方提问，例如：第一期主要给谁使用？" required></textarea><div><small id="chat-help">Enter 发送 · Shift + Enter 换行</small><button id="send" type="submit" class="primary">发送 ↗</button></div></form>
+      </section>
+      <section class="notebook panel"><div class="tabs" role="tablist"><button id="notes-tab" class="selected" role="tab" aria-selected="true">需求笔记 <span id="note-count">0</span></button><button id="document-tab" role="tab" aria-selected="false">需求文档 <span id="document-count">0</span></button></div>
+        <div id="notes-pane"><div class="notebook-intro"><h2>把你想到的，先记下来。</h2><p>记录事实、疑问或假设。笔记不会自动成为需求方已确认的承诺。</p></div>
+          <form id="note-form"><label for="note-category">细节分类</label><select id="note-category"></select><label for="note-text">我的记录</label><textarea id="note-text" rows="4" maxlength="4000" placeholder="例如：是否需要在提交前让客服确认？待进一步询问。" required></textarea><div class="note-actions"><small id="draft-status">草稿自动保存在浏览器</small><button type="button" id="cancel-edit" hidden>取消编辑</button><button id="save-note" type="submit" class="secondary">＋ 保存笔记</button></div></form>
+          <div id="notes-list"></div>
+        </div>
+        <div id="document-pane" hidden><div id="document-empty" class="empty"><span>▤</span><h3>把访谈变成一份成果</h3><p>完成对话并保存笔记后，点击“生成需求文档”。总结 Agent 会整理已确认需求、待确认事项及追问建议。</p></div><div id="document-content" hidden><div class="document-toolbar"><label>文档版本 <select id="document-version"></select></label><a id="download" class="secondary">↓ 导出 Markdown</a></div><div id="stale-banner" class="banner" hidden>对话或笔记已更新，此版本尚未包含新内容。可重新生成文档。</div><p id="review-status" class="review-note">AI 整理草稿 · 请对照来源复核。</p><div class="document-toolbar"><button id="finalize-document" class="primary">我已复核，确认定稿</button><a id="enter-design" class="secondary" hidden>进入技术方案设计 →</a><button id="continue-document" class="secondary">继续补充澄清</button></div><article id="document-body"></article></div></div>
+      </section>
+    </div>
+  </section>
+  <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description"><h2 id="delete-title">删除这次练习？</h2><p id="delete-description"></p><p class="delete-warning">对话、笔记和已生成的文档将一并删除，无法撤销。已经导出的文件不受影响。</p><div class="delete-actions"><button id="delete-cancel" class="secondary" autofocus>取消</button><button id="delete-confirm" class="danger">确认删除</button></div></dialog>
+  <dialog id="stage-guide" aria-labelledby="guide-heading" aria-describedby="guide-goal"><div class="guide-header"><div><span class="eyebrow">PRACTICE GUIDE / 阶段指南</span><h2 id="guide-heading"></h2></div><button id="guide-close" data-guide-control aria-label="关闭阶段指南" autofocus>✕</button></div><p id="guide-goal"></p><p id="guide-availability"></p><div class="guide-tabs" role="tablist" aria-label="选择阶段指南"><button id="guide-tab-1" data-guide-tab="1" data-guide-control role="tab" aria-selected="true" aria-controls="guide-content">01 需求澄清</button><button id="guide-tab-3" data-guide-tab="3" data-guide-control role="tab" aria-selected="false" aria-controls="guide-content" tabindex="-1">03 方案设计</button><button id="guide-tab-5" data-guide-tab="5" data-guide-control role="tab" aria-selected="false" aria-controls="guide-content" tabindex="-1">05 智能体开发</button></div><div id="guide-content" role="tabpanel" aria-labelledby="guide-tab-1" tabindex="0"></div></dialog>
+  <div id="toast" role="status" hidden></div>
+  <div id="busy-indicator" role="status" hidden><span class="spinner"></span><span id="busy-text"></span></div>
+</main>
+</body></html>

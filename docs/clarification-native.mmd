@@ -1,0 +1,32 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([开始]):::first
+	record_user(记录用户问题)
+	prepare_context(读取对话与笔记)
+	stakeholder_agent(需求方 Agent)
+	validate_reply(回复校验)
+	record_assistant(记录需求方回复)
+	record_notes(保存需求笔记)
+	continue_clarification(继续澄清)
+	save_failure(保存失败与重试状态)
+	__end__([结束]):::last
+	__start__ -. &nbsp;继续补充&nbsp; .-> continue_clarification;
+	__start__ -. &nbsp;记录笔记&nbsp; .-> record_notes;
+	__start__ -. &nbsp;提问&nbsp; .-> record_user;
+	prepare_context --> stakeholder_agent;
+	record_user --> prepare_context;
+	stakeholder_agent -.-> save_failure;
+	stakeholder_agent -.-> validate_reply;
+	validate_reply -.-> record_assistant;
+	validate_reply -.-> save_failure;
+	continue_clarification --> __end__;
+	record_assistant --> __end__;
+	record_notes --> __end__;
+	save_failure --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
