@@ -1,5 +1,7 @@
 # Agent Lab · 智能体开发练习室
 
+**简体中文** | [English](README.en.md)
+
 第一版实现阶段 1「需求澄清」：选择需求 → 与需求方 Agent 访谈 → 记录和编辑笔记 → 总结 Agent 生成带证据的需求文档。阶段 3「技术方案设计」已提供流程画布、步骤列表和方案评审；阶段 5「智能体开发」尚未实现。
 
 ## 启动
@@ -21,7 +23,7 @@ python -m venv .venv
 
 所有真实 Agent 统一连接 **DeepSeek-V4.1-Flash**，官方地址固定为 `https://api.deepseek.com`，请求模型 ID 为 `deepseek-flash`。根据 [DeepSeek 官方文档](https://api-docs.deepseek.com/)，该 ID 当前由 DeepSeek-V4.1-Flash-1017 提供服务，产品名称不直接作为 API 请求 ID。
 
-已创建本项目 `.env`，只需填写：
+在项目根目录将 `.env.example` 复制为 `.env`，然后填写：
 
 ```dotenv
 DEEPSEEK_API_KEY=你的密钥
